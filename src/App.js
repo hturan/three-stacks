@@ -4,6 +4,8 @@ const Button = ({ color, style }) => (
   <a
     style={{
       position: 'absolute',
+      left: -45,
+      top: -20,
       padding: '8px 16px',
       fontWeight: 600,
       backgroundColor: 'white',
@@ -132,56 +134,72 @@ const colorScales = {
 const fontWeights = [200, 400, 600, 800];
 const borderWidths = [1, 3, 5, 7, 9];
 
-class App extends Component {
+class ThreeStacks extends Component {
   state = {
-    x: 0.0,
-    y: 0.0,
-    activeColor: 'blue'
+    mouseX: 0.5,
+    mouseY: 0.5
   };
 
   handleMouseMove = e => {
     const x = e.clientX / this.ref.clientWidth;
     const y = e.clientY / this.ref.clientHeight;
 
-    this.setState({ x, y });
+    this.setState({ mouseX: x, mouseY: y });
   };
 
   render() {
-    const { x, y, activeColor } = this.state;
+    const { mouseX, mouseY } = this.state;
+    const { x, y, z } = this.props;
 
     return (
       <div
         style={{
           height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          display: 'grid',
+          gridTemplateColumns: x.values
+            .map((_, index) => 1 / x.values.length * 100 + '%')
+            .join(' '),
+          gridTemplateRows: y.values
+            .map((_, index) => 1 / y.values.length * 100 + '%')
+            .join(' '),
+          placeItems: 'center',
+          placeContent: 'stretch',
           perspective: '2000px',
           transformStyle: 'preserve-3d',
-          perspectiveOrigin: `${x * 100}% ${y * 100}%`
+          perspectiveOrigin: `${mouseX * 100}% ${mouseY * 100}%`
         }}
         onMouseMove={this.handleMouseMove}
         ref={ref => (this.ref = ref)}
       >
-        {borderWidths.map((borderWidth, i0) =>
-          fontWeights.map((fontWeight, i1) =>
-            colorScales[activeColor].map((color, i2) => (
-              <Button
-                color={color}
-                style={{
-                  top: `${(i0 / borderWidths.length + 0.08) * 100}%`,
-                  left: `${(i1 / fontWeights.length + 0.08) * 100}%`,
-                  fontWeight,
-                  transform: `translateZ(${i2 * 50}px)`,
-                  borderWidth
-                }}
-              />
-            ))
-          )
+        {y.values.map((_, yi) =>
+          x.values.map((_, xi) => (
+            <div style={{position: 'relative'}}>
+              {z.values.map((_, zi) => {
+                return (
+                  <Button
+                    color={z.values[zi]}
+                    style={{
+                      transform: `translateZ(${zi * 40}px)`,
+                      [x.property]: x.values[xi],
+                      [y.property]: y.values[yi]
+                    }}
+                  />
+                );
+              })}
+            </div>
+          ))
         )}
       </div>
     );
   }
 }
+
+const App = () => (
+  <ThreeStacks
+    x={{ property: 'fontWeight', values: fontWeights }}
+    y={{ property: 'borderWidth', values: borderWidths }}
+    z={{ property: 'color', values: colorScales['blue'] }}
+  />
+);
 
 export default App;
