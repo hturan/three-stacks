@@ -1,1 +1,1 @@
-![](https://i.imgur.com/WqpbsPK.gif)
+![](./three-stacks.gif)
