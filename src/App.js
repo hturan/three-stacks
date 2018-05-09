@@ -136,7 +136,8 @@ const borderWidths = [1, 3, 5, 7, 9];
 class ThreeStacks extends Component {
   state = {
     mouseX: 0.5,
-    mouseY: 0.5
+    mouseY: 0.5,
+    perspective: 2000
   };
 
   handleMouseMove = e => {
@@ -146,8 +147,18 @@ class ThreeStacks extends Component {
     this.setState({ mouseX: x, mouseY: y });
   };
 
+  componentDidMount = () => {
+    window.addEventListener('wheel', e => {
+      const diff = e.deltaY;
+
+      this.setState({
+        perspective: this.state.perspective + diff
+      })
+    })
+  }
+
   render() {
-    const { mouseX, mouseY } = this.state;
+    const { mouseX, mouseY, perspective } = this.state;
     const { x, y, z, render } = this.props;
 
     return (
@@ -163,7 +174,7 @@ class ThreeStacks extends Component {
             .join(' '),
           placeItems: 'center',
           placeContent: 'stretch',
-          perspective: '2000px',
+          perspective: `${perspective}px`,
           transformStyle: 'preserve-3d',
           perspectiveOrigin: `${mouseX * 100}% ${mouseY * 100}%`
         }}
@@ -186,19 +197,23 @@ class ThreeStacks extends Component {
   }
 }
 
+// const colors = Object.keys(colorScales).map(color => colorScales[color][3])
+const colors = colorScales['red'];
+
 const App = () => (
   <ThreeStacks
     x={fontWeights}
     y={borderWidths}
-    z={colorScales['blue']}
+    z={colors}
     render={(x, y, z) => (
       <Button
         style={{
           transform: `translateZ(${z * 40}px)`,
           fontWeight: fontWeights[x],
           borderWidth: borderWidths[y],
-          borderColor: colorScales['blue'][z],
-          color: colorScales['blue'][z]
+          borderColor: colors[z],
+          color: colors[z],
+          zIndex: z + 1
         }}
       />
     )}
