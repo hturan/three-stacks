@@ -18,19 +18,6 @@ const Button = ({ color, style }) => (
   </a>
 );
 
-const colors = [
-  '#0c2231',
-  '#163d57',
-  '#1f567a',
-  '#276d9b',
-  '#2c7cb0',
-  '#479ad1',
-  '#7cb7de',
-  '#add2eb',
-  '#d6e9f5',
-  '#ebf4fa'
-];
-
 const colorScales = {
   red: [
     '#430c15',
