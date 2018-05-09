@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-const Button = ({ color, style }) => (
+const Button = ({ style }) => (
   <a
     style={{
       position: 'absolute',
@@ -9,9 +9,8 @@ const Button = ({ color, style }) => (
       padding: '8px 16px',
       fontWeight: 600,
       backgroundColor: 'white',
-      border: `2px solid ${color}`,
       borderRadius: 3,
-      color,
+      borderStyle: 'solid',
       fontFamily: 'BlinkMacSystemFont, -apple-system',
       ...style
     }}
@@ -149,18 +148,18 @@ class ThreeStacks extends Component {
 
   render() {
     const { mouseX, mouseY } = this.state;
-    const { x, y, z } = this.props;
+    const { x, y, z, render } = this.props;
 
     return (
       <div
         style={{
           height: '100%',
           display: 'grid',
-          gridTemplateColumns: x.values
-            .map((_, index) => 1 / x.values.length * 100 + '%')
+          gridTemplateColumns: x
+            .map((_, index) => 1 / x.length * 100 + '%')
             .join(' '),
-          gridTemplateRows: y.values
-            .map((_, index) => 1 / y.values.length * 100 + '%')
+          gridTemplateRows: y
+            .map((_, index) => 1 / y.length * 100 + '%')
             .join(' '),
           placeItems: 'center',
           placeContent: 'stretch',
@@ -171,19 +170,12 @@ class ThreeStacks extends Component {
         onMouseMove={this.handleMouseMove}
         ref={ref => (this.ref = ref)}
       >
-        {y.values.map((_, yi) =>
-          x.values.map((_, xi) => (
+        {y.map((_, yi) =>
+          x.map((_, xi) => (
             <div style={{position: 'relative'}}>
-              {z.values.map((_, zi) => {
+              {z.map((_, zi) => {
                 return (
-                  <Button
-                    color={z.values[zi]}
-                    style={{
-                      transform: `translateZ(${zi * 40}px)`,
-                      [x.property]: x.values[xi],
-                      [y.property]: y.values[yi]
-                    }}
-                  />
+                  render(xi, yi, zi)
                 );
               })}
             </div>
@@ -196,9 +188,20 @@ class ThreeStacks extends Component {
 
 const App = () => (
   <ThreeStacks
-    x={{ property: 'fontWeight', values: fontWeights }}
-    y={{ property: 'borderWidth', values: borderWidths }}
-    z={{ property: 'color', values: colorScales['blue'] }}
+    x={fontWeights}
+    y={borderWidths}
+    z={colorScales['blue']}
+    render={(x, y, z) => (
+      <Button
+        style={{
+          transform: `translateZ(${z * 40}px)`,
+          fontWeight: fontWeights[x],
+          borderWidth: borderWidths[y],
+          borderColor: colorScales['blue'][z],
+          color: colorScales['blue'][z]
+        }}
+      />
+    )}
   />
 );
 
