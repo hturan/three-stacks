@@ -1,6 +1,6 @@
 ![](./three-stacks.gif)
 
-run example with `yarn && yarn start`
+run example with `yarn && yarn start`, or just visit https://hturan.com/three-stacks
 
 move mouse / tilt device to alter perspective offset, mouse wheel to alter perspective depth
 
