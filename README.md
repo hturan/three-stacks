@@ -2,7 +2,7 @@
 
 run example with `yarn && yarn start`
 
-scroll wheel/device tilt to alter perspective offset, mouse wheel to alter perspective depth
+move mouse / tilt device to alter perspective offset, mouse wheel to alter perspective depth
 
 `<ThreeStacks />` expects four props —
 
