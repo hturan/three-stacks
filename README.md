@@ -1,8 +1,8 @@
 ![](./three-stacks.gif)
 
-run example with `yarn && yarn start`.
+run example with `yarn && yarn start`
 
-scroll wheel/device tilt to alter perspective, mouse wheel to zoom.
+scroll wheel/device tilt to alter perspective offset, mouse wheel to alter perspective depth
 
 `<ThreeStacks />` expects four props —
 
