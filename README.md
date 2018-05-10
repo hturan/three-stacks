@@ -11,6 +11,8 @@ scroll wheel/device tilt to alter perspective offset, mouse wheel to alter persp
 - `z` — an array of values to render across the z-axis
 - `render` — a render function that takes `x`, `y`, and `z` values and returns a component
 
+like so —
+
 ```jsx
 <ThreeStacks
   x={borderWidths}
